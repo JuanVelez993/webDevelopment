@@ -24,15 +24,21 @@ function reducer(state, action) {
             const newStateWithDeletedCategory = {...state, listOfCategories: newlistOfCategory }
             return newStateWithDeletedCategory
 
+        case 'add-task':
+            const categoryNew = action.payload
+            const categoriesUpdated =
+                state.listOfCategories.map(category => category.id !== action.payload.id ?
+                    category : categoryNew)
+            const stateAddedTask = {
+                ...state,
+                listOfCategories: categoriesUpdated
+            }
+            return stateAddedTask
+
+        case 'update-task':
             return state
 
-        case 'add-note':
-            return state
-
-        case 'update-note':
-            return state
-
-        case 'delete-note':
+        case 'delete-task':
             return state
     }
 }
