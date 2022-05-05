@@ -2,8 +2,12 @@ function reducer(state, action) {
 
     switch (action.type) {
         case 'get-categories':
+            const stateWithCategories = {
+                ...state,
+                listOfCategories: action.payload
+            }
+            return stateWithCategories
 
-            return state
 
         case 'add-category':
             const newCategory = action.payload
@@ -15,6 +19,10 @@ function reducer(state, action) {
             return stateAddedCategory
 
         case 'delete-category':
+            const newlistOfCategory =
+                state.listOfCategories.filter(category => category.id !== action.payload.id)
+            const newStateWithDeletedCategory = {...state, listOfCategories: newlistOfCategory }
+            return newStateWithDeletedCategory
 
             return state
 
