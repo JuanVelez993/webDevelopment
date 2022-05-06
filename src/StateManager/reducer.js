@@ -26,6 +26,7 @@ function reducer(state, action) {
 
         case 'add-task':
             const categoryNew = action.payload
+            console.log(state.listOfCategories)
             const categoriesUpdated =
                 state.listOfCategories.map(category => category.id !== action.payload.id ?
                     category : categoryNew)
@@ -39,7 +40,19 @@ function reducer(state, action) {
             return state
 
         case 'delete-task':
-            return state
+            const taskDeleted = action.payload
+            const categoryOfTaskDeleted = state.listOfCategories.find(category => category.id === taskDeleted.fk_Category);
+            const categoryUpdated = {
+                ...categoryOfTaskDeleted,
+                listOfTasks: categoryOfTaskDeleted.listOfTasks.filter(task => task.id !== taskDeleted.id)
+            };
+            const categoriesUpdatedWithDeleted = state.listOfCategories.map(category => category.id !== taskDeleted.fk_Category ?
+                category : categoryUpdated);
+
+            const stateDeletedTask = {...state, listOfCategories: categoriesUpdatedWithDeleted }
+            return stateDeletedTask
+
+
     }
 }
 

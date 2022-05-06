@@ -12,7 +12,7 @@ const Category = () => {
       name: e.target.value,
       categoryId: category.id,
     });
-    console.log("task 2: ", task)
+
   }
 
 
@@ -93,9 +93,32 @@ const Category = () => {
         dispatch(action)
         setTask("");
       }).catch(err => {
-        console.log("The task wasnt removed", err)
+        console.log("The task wasnt added", err)
       })
   
+  }
+  const deleteTask = async (requestTask) => {
+    let response = await fetch(`http://localhost:8081/api/delete/task`,
+      {
+        method: 'DELETE',
+        headers: {  
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify(requestTask)
+      })
+  }
+
+  const onDeleteTask=async (task) => {
+    deleteTask(task).then(
+      () => {
+        let action = {
+          type: 'delete-task',
+          payload: task
+        }
+        dispatch(action)   
+      }).catch(err => {
+        console.log("The task was not removed", err)
+      })
   }
 
   return (
@@ -119,14 +142,14 @@ const Category = () => {
                 <td>Edit</td>  
               </tr>
               {category.listOfTasks ? category.listOfTasks.map(task => {
-                return <tr>
+                return <tr key={task.id}>
                   <td>{task.id}</td>
                   <td>{task.taskName}</td>
                   <td>
                     <input onChange={(e) => onCheckBox(e)} type="checkbox" checked={task.done} />
                   </td>
-                  <td>Delete</td>
-                  <td>Edit</td> 
+                  <td><button className="btn" onClick={(e) => onDeleteTask(task)}>X </button></td>
+                  <td><button className="btn" > Edit Task </button></td> 
                 </tr>
               }) : ""}
         
