@@ -134,6 +134,14 @@ const Category = () => {
       })
   }
 
+  const onEdit = async (e,task) => {
+    setTask({
+      name: task.taskName,
+    });
+    
+    
+  }
+
   return (
     <div >
       <table >
@@ -162,7 +170,7 @@ const Category = () => {
                     <input onChange={(e) => onCheckBox(e,task)} type="checkbox" checked={task.done} />
                   </td>
                   <td><button className="btn" onClick={(e) => onDeleteTask(task)}>X </button></td>
-                  <td><button className="btn" disabled={task.done}> Edit Task </button></td> 
+                  <td><button className="btn"  disabled={task.done} onClick={(e) => onEdit(e,task)}> Edit Task </button></td> 
                 </tr>
               }) : ""}
         
