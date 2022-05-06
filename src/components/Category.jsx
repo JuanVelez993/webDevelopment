@@ -33,7 +33,20 @@ const Category = () => {
     return data
   }
 
-  const onCheckBox = async () => {
+  const onCheckBox = async (e,task) => {
+    const checked = e.currentTarget.checked;
+    let taskChecked = { ...task, done: checked }
+    let taskUpdatedPromise = await fetch(`http://localhost:8081/api/update/task`, {
+      method: 'PUT', headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(taskChecked),
+    })
+    let taskUpdated = await taskUpdatedPromise.json();
+    dispatch({
+      type: 'update-taskCheckBox',
+      payload: taskUpdated
+    })
     
   }
   
@@ -146,7 +159,7 @@ const Category = () => {
                   <td>{task.id}</td>
                   <td>{task.taskName}</td>
                   <td>
-                    <input onChange={(e) => onCheckBox(e)} type="checkbox" checked={task.done} />
+                    <input onChange={(e) => onCheckBox(e,task)} type="checkbox" checked={task.done} />
                   </td>
                   <td><button className="btn" onClick={(e) => onDeleteTask(task)}>X </button></td>
                   <td><button className="btn" > Edit Task </button></td> 

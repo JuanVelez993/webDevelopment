@@ -39,6 +39,24 @@ function reducer(state, action) {
         case 'update-task':
             return state
 
+        case 'update-taskCheckBox':
+            const taskChecked = action.payload
+            const categoryWithTaskCheckBox = state.listOfCategories.find(category => category.id === taskChecked.fk_Category);
+            const categoryUpdatedCheckBox = {
+                ...categoryWithTaskCheckBox,
+                listOfTasks: categoryWithTaskCheckBox.listOfTasks.map(task => {
+                    if (task.id === taskChecked.id) {
+                        return taskChecked
+                    }
+                    return task
+                })
+            };
+            const categoriesUpdatedWithCheckBox = state.listOfCategories.map(category => category.id !== taskChecked.fk_Category ?
+                category : categoryUpdatedCheckBox);
+            const stateCheckedBoxes = {...state, listOfCategories: categoriesUpdatedWithCheckBox }
+            return stateCheckedBoxes
+
+
         case 'delete-task':
             const taskDeleted = action.payload
             const categoryOfTaskDeleted = state.listOfCategories.find(category => category.id === taskDeleted.fk_Category);
