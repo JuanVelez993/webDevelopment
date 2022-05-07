@@ -37,7 +37,17 @@ function reducer(state, action) {
             return stateAddedTask
 
         case 'update-task':
-            return state
+            const taskUpdated = action.payload
+            const categoryOfTaskUpdated = state.listOfCategories.find(category => category.id === taskUpdated.fk_Category);
+            const categoryTaskUpdated = {
+                ...categoryOfTaskUpdated,
+                listOfTasks: categoryOfTaskUpdated.listOfTasks.map(task => task.id !== taskUpdated.id ? task : taskUpdated)
+            };
+            const categoriesUpdatedWithUpdated = state.listOfCategories.map(category => category.id !== taskUpdated.fk_Category ?
+                category : categoryTaskUpdated);
+
+            const stateUpdatedTask = {...state, listOfCategories: categoriesUpdatedWithUpdated }
+            return stateUpdatedTask
 
         case 'update-taskCheckBox':
             const taskChecked = action.payload
@@ -59,16 +69,16 @@ function reducer(state, action) {
 
         case 'delete-task':
             const taskDeleted = action.payload
-            const categoryOfTaskDeleted = state.listOfCategories.find(category => category.id === taskDeleted.fk_Category);
+            const categoryOfTaskDeleted = state.listOfCategories.find(category => category.id === taskUpdated.fk_Category);
             const categoryUpdated = {
-                ...categoryOfTaskDeleted,
-                listOfTasks: categoryOfTaskDeleted.listOfTasks.filter(task => task.id !== taskDeleted.id)
+                ...categoryOfTaskUpdated,
+                listOfTasks: categoryOfTaskUpdated.listOfTasks.filter(task => task.id !== taskUpdated.id)
             };
-            const categoriesUpdatedWithDeleted = state.listOfCategories.map(category => category.id !== taskDeleted.fk_Category ?
-                category : categoryUpdated);
+            const categoriesUpdatedWithDeleted = state.listOfCategories.map(category => category.id !== taskUpdated.fk_Category ?
+                category : categoryTaskUpdated);
 
-            const stateDeletedTask = {...state, listOfCategories: categoriesUpdatedWithDeleted }
-            return stateDeletedTask
+            const stateDeletedTask = {...state, listOfCategories: categoriesUpdatedWithUpdated }
+            return stateUpdatedTask
 
 
     }
