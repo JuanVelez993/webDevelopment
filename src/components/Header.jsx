@@ -49,7 +49,7 @@ const Header = () => {
                   <label>Create Category: </label>
           <input type="text" name="category" onChange={addCategory} />
               </div>
-             <button className="btn" >Add Category</button>
+        <button className="button-51" >Add Category</button>
           </form>
     </div>
   )

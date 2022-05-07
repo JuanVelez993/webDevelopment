@@ -125,13 +125,15 @@ const Category = (props) => {
         dispatch(action)
         document.getElementById("inputTask").value = "";
       }).catch(err => {
-        console.log("The task was not removed", err)
+        console.log("The task was not updated", err)
       })
+      props.setUpdated({clicked:false})
+      
   }
 
   return (
-    <div >
-      <table >
+    <div className="main-div">
+      <table className="table">
         {
           state.listOfCategories.map(category => {
 
@@ -139,10 +141,10 @@ const Category = (props) => {
               <tr >
                 <td> <h3>{category.name}</h3></td>
                 <td> <input type='text' id="inputTask" onChange={(e) => updateTaskField(e, category)} placeholder='Add task' /></td>
-                <td> <button className="btn" onClick={props.updated.clicked ? onUpdateTask : onAddTask}> {props.updated.clicked ? "Update":"Add"}</button></td>
-                <td> <button className="btn" onClick={() => onDelete(category)}> Delete Category </button></td>
+                <td> <button className="button-51" onClick={props.updated.clicked && category.id == props.updated.task.fk_Category ? onUpdateTask : onAddTask}> {props.updated.clicked && category.id ==props.updated.task.fk_Category ? "Update":"Add"}</button></td>
+                <td> <button className="button-51" onClick={() => onDelete(category)}> Delete Category </button></td>
               </tr>
-              <tr >
+              <tr className="bar">
                 <td>Id</td>
                 <td>Task</td>
                 <td>Done?</td>
@@ -150,8 +152,9 @@ const Category = (props) => {
                 <td>Edit</td>  
               </tr>
               <ListOfTask category={category} setUpdated={props.setUpdated}/>
-        
+              <br />
             </tbody>
+            
           })
         }
       </table>

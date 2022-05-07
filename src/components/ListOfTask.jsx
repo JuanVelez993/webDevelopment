@@ -47,12 +47,10 @@ const ListOfTask = (props) => {
     }
 
     const onEdit = async (e, task) => {
-        console.log("setUpdated", props.setUpdated)
-        props.setUpdated({
+         props.setUpdated({
             clicked: true,
             task: task
         });
-        console.log()
         document.getElementById("inputTask").value = task.taskName;
 
     }
@@ -65,8 +63,8 @@ const ListOfTask = (props) => {
                 <td>
                     <input onChange={(e) => onCheckBox(e, task)} type="checkbox" checked={task.done} />
                 </td>
-                <td><button className="btn" onClick={(e) => onDeleteTask(task)}>X </button></td>
-                <td><button className="btn" disabled={task.done} onClick={(e) => onEdit(e, task)}> Edit Task </button></td>
+                <td><button className="button-52" onClick={(e) => onDeleteTask(task)}>X </button></td>
+                <td><button className="button-53" disabled={task.done} onClick={(e) => onEdit(e, task)}> Edit Task </button></td>
             </tr>
         }) : ""
     )
