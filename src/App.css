@@ -41,6 +41,12 @@ button {
     font-size: calc(10px + 2vmin);
 }
 
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 
 /* CSS */
 
@@ -256,4 +262,11 @@ button {
 
 .main-div {
     justify-content: center;
+}
+
+.dasboard {
+    width: 100%;
+    border: 1px solid #266DB6;
+    border-radius: 8px;
+    background: #266DB6
 }

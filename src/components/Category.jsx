@@ -139,7 +139,7 @@ const Category = (props) => {
 
             return <tbody key={category.id} >
               <tr >
-                <td> <h3>{category.name}</h3></td>
+                <td> <h3 ClassName="category">{category.name}</h3></td>
                 <td> <input type='text' id="inputTask" onChange={(e) => updateTaskField(e, category)} placeholder='Add task' /></td>
                 <td> <button className="button-51" onClick={props.updated.clicked && category.id == props.updated.task.fk_Category ? onUpdateTask : onAddTask}> {props.updated.clicked && category.id ==props.updated.task.fk_Category ? "Update":"Add"}</button></td>
                 <td> <button className="button-51" onClick={() => onDelete(category)}> Delete Category </button></td>
