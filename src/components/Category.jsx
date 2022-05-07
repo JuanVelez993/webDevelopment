@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
+import ListOfTask from './ListOfTask'
 import { Store } from '../StateManager/StoreProvider'
 
 
@@ -33,22 +34,7 @@ const Category = (props) => {
     return data
   }
 
-  const onCheckBox = async (e,task) => {
-    const checked = e.currentTarget.checked;
-    let taskChecked = { ...task, done: checked }
-    let taskUpdatedPromise = await fetch(`http://localhost:8081/api/update/task`, {
-      method: 'PUT', headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(taskChecked),
-    })
-    let taskUpdated = await taskUpdatedPromise.json();
-    dispatch({
-      type: 'update-taskCheckBox',
-      payload: taskUpdated
-    })
-    
-  }
+  
   
   const onDelete = async (category) => {
 
@@ -110,40 +96,7 @@ const Category = (props) => {
       })
   
   }
-  const deleteTask = async (requestTask) => {
-    let response = await fetch(`http://localhost:8081/api/delete/task`,
-      {
-        method: 'DELETE',
-        headers: {  
-          'Content-type': 'application/json'
-        },
-        body: JSON.stringify(requestTask)
-      })
-  }
-
-  const onDeleteTask=async (task) => {
-    deleteTask(task).then(
-      () => {
-        let action = {
-          type: 'delete-task',
-          payload: task
-        }
-        dispatch(action)   
-      }).catch(err => {
-        console.log("The task was not removed", err)
-      })
-  }
-
-  const onEdit = async (e,task) => {
-    console.log("setUpdated", props.setUpdated)
-    props.setUpdated({
-      clicked:true,
-      task: task
-    });
-    console.log()
-    document.getElementById("inpuntGay").value = task.taskName;
-    
-  }
+  
   const updateTask =async () => {
     const taskRequest = { ...props.updated.task, 
       taskName: taskField.name
@@ -170,7 +123,7 @@ const Category = (props) => {
           payload: updatedTask
         }
         dispatch(action)
-        document.getElementById("inpuntGay").value = "";
+        document.getElementById("inputTask").value = "";
       }).catch(err => {
         console.log("The task was not removed", err)
       })
@@ -185,7 +138,7 @@ const Category = (props) => {
             return <tbody key={category.id} >
               <tr >
                 <td> <h3>{category.name}</h3></td>
-                <td> <input type='text' id="inpuntGay" onChange={(e) => updateTaskField(e, category)} placeholder='Add task' /></td>
+                <td> <input type='text' id="inputTask" onChange={(e) => updateTaskField(e, category)} placeholder='Add task' /></td>
                 <td> <button className="btn" onClick={props.updated.clicked ? onUpdateTask : onAddTask}> {props.updated.clicked ? "Update":"Add"}</button></td>
                 <td> <button className="btn" onClick={() => onDelete(category)}> Delete Category </button></td>
               </tr>
@@ -196,17 +149,7 @@ const Category = (props) => {
                 <td>Delete</td>
                 <td>Edit</td>  
               </tr>
-              {category.listOfTasks ? category.listOfTasks.map(task => {
-                return <tr key={task.id}>
-                  <td>{task.id}</td>
-                  <td style={task.done ? { textDecoration: 'line-through' } : {}}>{task.taskName}</td>
-                  <td>
-                    <input onChange={(e) => onCheckBox(e,task)} type="checkbox" checked={task.done} />
-                  </td>
-                  <td><button className="btn" onClick={(e) => onDeleteTask(task)}>X </button></td>
-                  <td><button className="btn"  disabled={task.done} onClick={(e) => onEdit(e,task)}> Edit Task </button></td> 
-                </tr>
-              }) : ""}
+              <ListOfTask category={category} setUpdated={props.setUpdated}/>
         
             </tbody>
           })
